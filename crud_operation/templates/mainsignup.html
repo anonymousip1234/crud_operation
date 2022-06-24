@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <a href="{% url 'producersignup' %}" class = 'btn btn-primary'>SignUp as Producer</a>
+    </div>
+    <div class="container">
+        <a href="{% url 'reportersignup' %}" class = 'btn btn-primary'>SignUp as Reporter</a>
+    </div>  
+    <div class="container">
+        <a href="{% url 'viewersignup' %}" class = 'btn btn-primary'>SignUp as Viewer</a>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  {% if perms.crud_operation.add_post %}
+    <a class="btn btn-primary" href="{% url 'addpost' %}" role="button">ADD POST</a>
+  {% endif %}
+</div>
+{% for group in groups %}
+<div class="col-sm-2">
+  
+    <h3>Hi {{group}}</h3>
+
+</div>
+{% endfor %}
+<div class="col-sm-10">
+  <table class="table table-dark table-striped">
+    <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in posts %}
+        <tr>
+          <th scope="row">{{post.id}}</th>
+          <td>{{post.title}}</td>
+          <td>{{post.desc}}</td>
+          <td class="text-center">
+            {% if perms.crud_operation.change_post %}
+            <a href="{% url 'editpost' post.id %}"  class = 'btn btn-success'>Edit</a>
+            {% endif %}
+            {% if perms.crud_operation.delete_post %}
+            <form action="{% url 'deletepost' post.id %}" method = 'post'>
+              {% csrf_token %}
+              <input type="submit" class ='btn btn-danger' value = 'delete'>
+            {% endif %}
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+        
+      </tbody>
+  </table>
+{% endblock content %} 
+</div>
