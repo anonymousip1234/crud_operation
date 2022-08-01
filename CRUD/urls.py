@@ -26,6 +26,7 @@ urlpatterns = [
     path('viewersignup/',views.viewersignup,name='viewersignup'),
     path('login/',views.login,name = 'login'),
     path('dashboard/',views.dashboard,name = 'dashboard'),
+    path('admindashboard/',views.admindashboard,name = 'admindashboard'),
     path('addpost/',views.addpost,name='addpost'),
     path('editpost/<id>',views.editpost,name='editpost'),
     path('deletpost/<id>',views.deletepost,name='deletepost'),

@@ -75,7 +75,13 @@ def login(request):
                 user = authenticate(username = uname,password = upass)
                 if user is not None:
                     auth_login(request,user)
-                    return HttpResponseRedirect('/dashboard/')
+                    gps = request.user.groups.all()
+                    for i in gps:
+                        if str(i) == 'admin':
+
+                            return HttpResponseRedirect('/admindashboard/')
+                        else:
+                            return HttpResponseRedirect('/dashboard/')
         else:
             form = LoginForm()
 
@@ -88,16 +94,34 @@ def dashboard(request):
         posts = Post.objects.all()
         user = request.user
         gps = user.groups.all()
-        return render(request,'dashboard.html',  {'posts':posts,'groups':gps} )
+
+        for i in gps:
+            a = str(i)
+        return render(request,'dashboard.html',  {'posts':posts,'groups':gps,'a':a} )
+
+def admindashboard(request):
+    if request.user.is_authenticated:
+        posts = Post.objects.all()
+        user = request.user
+        gps = user.groups.all()
+        return render(request,'admindashboard.html',  {'posts':posts,'groups':gps,} )
+
 
     
 
 #add edit and delete options
 def addpost(request):
+    
     if request.method == 'POST':
+        
         form = Postform(request.POST)
         if form.is_valid():
             form.save()
+            last_id= Post.objects.last().id
+            t = Post.objects.get(id=last_id)
+            t.updated_by = str(request.user.groups.all()[0])
+            t.save()
+            
             form = Postform()
     else:
 
@@ -123,7 +147,7 @@ def deletepost(request,id):
     if request.method =='POST':
         pi = Post.objects.get(pk=id)
         pi.delete()
-        return HttpResponseRedirect('/dashboard/')
+        return HttpResponseRedirect('/admindashboard/')
 
 #logout page
 def logout(request):

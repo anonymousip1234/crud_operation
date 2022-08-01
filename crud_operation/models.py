@@ -5,3 +5,4 @@ from django.db import models
 class Post(models.Model):
     title = models.CharField(max_length=50)
     desc = models.TextField()
+    updated_by = models.CharField(max_length=50)
